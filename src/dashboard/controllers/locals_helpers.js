@@ -1,4 +1,4 @@
-import mime from 'mime/lite';
+import mime from 'mime';
 import { extname } from 'path';
 
 const Helpers = {};
@@ -25,7 +25,7 @@ Helpers.getFileCategory = (contenType, url = '') => {
     json: ['json'],
   };
 
-  let ext = mime.getExtension(contenType) || extname(url);
+  let ext = mime.extension(contenType) || extname(url);
   if (ext.indexOf('.') === 0) {
     let end = ext.indexOf('?');
     if (end === -1) {

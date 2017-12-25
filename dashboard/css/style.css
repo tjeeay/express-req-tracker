@@ -63,10 +63,12 @@
   width: 50%;
   border: 1px solid #002141;
   border-right: none;
+  border-top: none;
 }
 .summary ul li:first-child {
   width: 100%;
   border-left: none;
+  border-top: 1px solid #002141;
 }
 .summary ul li:nth-child(even) {
   border-left: none;
@@ -92,7 +94,7 @@
 }
 .summary ul li dd {
   color: gray;
-  font-size: 12px;
+  font-size: 14px;
 }
 .summary .clear {
   clear: both;

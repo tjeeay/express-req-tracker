@@ -125,7 +125,7 @@
                   <td><%=req.method %></td>
                   <td>
                     <dl>
-                      <% let statusClass = `status_${('' + req.statusCode)[0]}xx`; %>
+                      <% var statusClass = `status_${('' + req.statusCode)[0]}xx`; %>
                       <dt class="<%=statusClass %>"><%=req.statusCode %></dt>
                       <dd><%=req.statusMessage %></dd>
                     </dl>

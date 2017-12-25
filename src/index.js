@@ -9,7 +9,8 @@ const debug = makeDebug('req-tracker:manager');
 const DEFAULT_OPTIONS = {
   immediate: false,
   capacity: 200,
-  delay: 5000 
+  delay: 5000,
+  maxcount: 50000
 };
 
 class TrackerManager {
@@ -63,11 +64,35 @@ class TrackerManager {
         self.app = doc;
         self.setReadyState('OK');
         debug(`tracker initialized for ${app.name}.`);
+
+        // release database
+        self.releaseStorage();
       }, err => {
         self.setReadyState('Error');
         debug(`tracker initialized for ${app.name} with error.`, err);
         throw err;
       });
+    });
+  }
+
+  releaseStorage() {
+    const self = this;
+    const { app, options } = self._config;
+
+    models.Request.count({ app: self.app.id }).then(function (count) {
+      debug(`current request logs count: ${count}`);
+      if (count >= options.maxcount) {
+        return models.Request.find({}, 'createdAt').skip(Math.floor(count / 2)).limit(1);
+      }
+      return null;
+    }).then(function (reqs) {
+      if (reqs && reqs.length) {
+        return models.Request.deleteMany({ _id: { $lt: reqs[0].id } });
+      }
+    }).then(function (r) {
+      if (r) debug('database was released.');
+    }, err => {
+      debug(`release database for ${app.name} with error.`, err);
     });
   }
 
