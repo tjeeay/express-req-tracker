@@ -1,5 +1,7 @@
 # express-req-tracker
 
+![](https://travis-ci.org/tjeeay/express-req-tracker.svg?branch=master)
+
 A Express middleware for tracking request and responses.
 
 ## Installation
