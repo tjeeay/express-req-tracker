@@ -1,0 +1,57 @@
+{
+  "name": "express-req-tracker",
+  "version": "1.2.1",
+  "description": "A Express middleware for tracking request and responses.",
+  "main": "lib/index.js",
+  "scripts": {
+    "prepublish": "npm run lint && npm run compile",
+    "compile": "npm run clean && babel src --out-dir lib",
+    "clean": "rimraf lib",
+    "lint": "eslint . --fix",
+    "start": "node ./examples/www",
+    "test": "mocha"
+  },
+  "keywords": [
+    "express",
+    "request",
+    "tracker"
+  ],
+  "author": "Tee Jay",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tjeeay/express-req-tracker.git"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "debug": "^3.0.1",
+    "dotenv": "^4.0.0",
+    "ejs": "^2.5.7",
+    "express": "^4.15.5",
+    "methods": "^1.1.2",
+    "mime": "^2.0.3",
+    "mongoose": "^4.13.1",
+    "on-finished": "^2.3.0",
+    "raw-body": "^2.3.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.0.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
+    "body-parser": "^1.18.2",
+    "eslint": "^4.10.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-mocha": "^4.11.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-security": "^1.4.0",
+    "mocha": "^4.0.1",
+    "rimraf": "^2.6.2",
+    "supertest": "^3.0.0"
+  },
+  "engines": {
+    "node": ">= 4.0.0"
+  }
+}

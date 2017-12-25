@@ -1,0 +1,12 @@
+require('dotenv').config();
+require('babel-register');
+const debug = require('debug')('*');
+
+const app = require('./').default;
+
+const PORT = process.env.PORT || 7001;
+app.listen(PORT, () => {
+  debug(`server is running at: http://localhost:${PORT}`);
+});
+
+module.exports = app;

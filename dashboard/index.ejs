@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="./vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="./css/style.css" rel="stylesheet">
+  <title>Request Tracker</title>
+</head>
+<body>
+  <div class="root">
+      <div class="sider-panel">
+        <div class="brand">
+          <nav class="icon"></nav>
+          <div class="title">
+            <span>Request</span>
+            <strong>Tracker</strong>
+          </div>
+        </div>
+
+        <div class="summary">
+          <ul class="counter">
+            <li>
+              <dl>
+                <dd>Total count</dd>
+                <dt class="status_3xx"><%=counter.total %></dt>
+              </dl>
+            </li>
+            <li>
+              <dl>
+                <dd>2xx</dd>
+                <dt class="status_2xx"><%=counter['2xx'] || 0 %></dt>
+              </dl>
+            </li>
+            <li>
+              <dl>
+                <dd>5xx</dd>
+                <dt class="status_5xx"><%=counter['5xx'] || 0 %></dt>
+              </dl>
+            </li>
+          </ul>
+          <div class="clear"></div>
+          <ul class="performance">
+            <li>
+              <dl>
+                <dd>Average duration</dd>
+                <% var average = Number(Number(performance.average).toFixed(2)); %>
+                <dt class="status_3xx" title="<%=average %> ms"><%=average %><em>ms</em></dt>
+              </dl>
+            </li>
+            <li>
+              <dl>
+                <dd>Fastest</dd>
+                <% var fastest = Number(Number(performance.fastest).toFixed(2)); %>
+                <dt class="status_2xx" title="<%=fastest %> ms"><%=fastest %><em>ms</em></dt>
+              </dl>
+            </li>
+            <li>
+              <dl>
+                <dd>Lowest</dd>
+                <% var lowest = Number(Number(performance.lowest).toFixed(2)); %>
+                <dt class="status_4xx" title="<%=lowest %> ms"><%=lowest %><em>ms</em></dt>
+              </dl>
+            </li>
+          </ul>
+          <div class="clear"></div>
+        </div>
+      </div>
+  
+      <div class="main">
+        <div class="filter-bar">
+          <form action="" method="GET" class="row">
+            <div class="form-group col-lg-2">
+              <label for="url">Status Code</label>
+              <select class="form-control" name="statusCode">
+                <% ['All', '1xx', '2xx', '3xx', '4xx', '5xx'].forEach(function (v) { %>
+                  <% if (params.statusCode === v) { %>
+                    <option value="<%=v %>" selected="selected"</option><%=v %></option>
+                  <% } else { %>
+                    <option value="<%=v %>"><%=v %></option>
+                  <% } %>
+                <% }) %>
+              </select>
+            </div>
+            <div class="form-group col-lg-2">
+              <label for="ip">IP Address</label>
+              <input type="text" class="form-control" name="ip" placeholder="IP Address" value="<%=params.ip %>">
+            </div>
+            <div class="form-group col-lg-3">
+              <label for="url">Request Url</label>
+              <input type="text" class="form-control" name="url" placeholder="Request Url" value="<%=params.url %>">
+            </div>
+            <div class="form-group col-lg-2">
+              <label for="ip">&nbsp;</label>
+              <button type="submit" class="btn btn-primary" style="display: block;">Search</button>
+            </div>
+          </form>
+        </div>
+    
+        <div class="requests">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Url</th>
+                <th>Method</th>
+                <th>Status</th>
+                <th>IP</th>
+                <th>Server IP</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% requests.forEach(function (req) { %>
+                <tr data-req="<%=JSON.stringify(req) %>">
+                  <td class='req-url'>
+                    <img src="<%=`./icons/${Helpers.getFileCategory(req.contentType, req.url)}.png`%>" onerror="this.src='./icons/default.png';" alt="" class="mime-icon">
+                    <dl title="<%=req.rawUrl %>">
+                      <dt><%=req.url %></dt>
+                      <dd><%=req.host %></dd>
+                    </dl>
+                  </td>
+                  <td><%=req.method %></td>
+                  <td>
+                    <dl>
+                      <% let statusClass = `status_${('' + req.statusCode)[0]}xx`; %>
+                      <dt class="<%=statusClass %>"><%=req.statusCode %></dt>
+                      <dd><%=req.statusMessage %></dd>
+                    </dl>
+                  </td>
+                  <td><%=req.ip %></td>
+                  <td><%=req.serverIP %></td>
+                  <td><%=req.contentType %></td>
+                  <td>
+                    <dl>
+                      <dt><%=Helpers.normalizeSize(req.bodySize) %></dt>
+                      <dd><%=Helpers.normalizeSize(req.contentLength) %></dd>
+                    </dl>
+                  </td>
+                  <td>
+                    <dl>
+                      <dt><%=Helpers.normalizeDuration(req.reqDuration) %></dt>
+                      <dd><%=Helpers.normalizeDuration(req.resDuration) %></dd>
+                    </dl>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="detail-panel">
+        <nav class="tab-bar">
+          <button class="close">
+            <span>×</span>
+          </button>
+          <ul class="tabs">
+            <li class="active" data-type="req">Request</li>
+            <li data-type="res">Response</li>
+          </ul>
+        </nav>
+        <div class="detail">
+          <div class="tab-content both"></div>
+          <div class="tab-content req"></div>
+          <div class="tab-content res hide"></div>
+        </div>
+      </div>
+  </div>
+
+  <script src="./vendors/jquery/jquery.min.js"></script>
+  <script src="./vendors/bootstrap/js/bootstrap.min.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+</html>
