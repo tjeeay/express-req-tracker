@@ -9,3 +9,5 @@ before_install:
   - export PATH="$HOME/.yarn/bin:$PATH"
 
 cache: yarn
+
+script: true
