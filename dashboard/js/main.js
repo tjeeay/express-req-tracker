@@ -97,6 +97,19 @@
       $req.append($query);
     }
 
+    // append Form body
+    if (req.reqHeaders && req.reqHeaders['Content-Type'] === 'application/x-www-form-urlencoded') {
+      const $form = $('<dl>').addClass('part form');
+      $form.append($('<dt>').text(`Form`));
+
+      const arr = req.body.split('&');
+      arr.forEach(item => {
+        const pair = item.split('=');
+        $form.append(makeItem(pair[0], decodeURIComponent(pair[1]) || '&nbsp;'));
+      });
+      $req.append($form);
+    }
+
     // append Body
     [[$req, 'body'], [$res, 'resBody']].forEach(([ $ele, prop ]) => {
       const prefix = {
@@ -104,7 +117,7 @@
         resBody: 'Response'
       };
       let rawBody = req[prop];
-      if (rawBody) { 
+      if (rawBody) {
         const $body = $('<dl>').addClass('part body');
         $body.append($('<dt>').text(`${prefix[prop]} Body`));
         
