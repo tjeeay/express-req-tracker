@@ -121,7 +121,7 @@
   
         const content = body ? JSON.stringify(body, null, 2) : rawBody;
   
-        $body.append(makeItem('', `<pre>${content}</pre>`));
+        $body.append(makeItem('', $('<pre>').text(content)[0].outerHTML));
         $ele.append($body);
       }
     });
