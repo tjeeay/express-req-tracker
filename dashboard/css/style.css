@@ -17,6 +17,10 @@
   padding: 15px;
   background-color: #002140;
 }
+.brand > a.index,
+.brand > a.index:hover {
+  text-decoration: unset;
+}
 .brand .icon {
   float: left;
   margin-top: 4px;

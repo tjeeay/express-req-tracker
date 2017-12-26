@@ -107,9 +107,9 @@ class CtrlBuilder {
       };
     }
 
-    path = join('/', path);
-    const fullPath = join('/', self.prefix, path);
-    debug(`mount route: ${method.toUpperCase()} ${fullPath}`);
+    path = join('/', path).replace(/\\/g, '/');
+    const fullPath = join('/', self.prefix, path).replace(/\\/g, '/');
+    debug(`mount route: ${method.toUpperCase()} ${fullPath}`);+
 
     self.router[method](path, fn);
   }

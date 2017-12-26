@@ -7,12 +7,12 @@ import ctrls from './controllers';
 const router = Router();
 
 export default function configRouter(manager, baseUrl) {
-  baseUrl = join('/', baseUrl);
+  baseUrl = join('/', baseUrl).replace(/\\/g, '/');
 
   Builder.setManager(manager);
 
   for(let ctrl of ctrls) {
-    const path = join(baseUrl, ctrl.prefix);
+    const path = join(baseUrl, ctrl.prefix).replace(/\\/g, '/');
     router.use(path, ctrl.router);
   }
   // trace request

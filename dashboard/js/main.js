@@ -235,6 +235,10 @@
     $('.detail-panel').removeClass('in');
   });
 
+  $(document).keyup(function(e) {
+    if (e.keyCode === 27) $('.tab-bar .close').click();   // esc
+  });
+
   $('.tab-bar .tabs li').on('click', function () {
     const $self = $(this);
     const type = $self.data('type');
