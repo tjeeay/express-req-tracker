@@ -37,4 +37,37 @@ Helpers.getFileCategory = (contenType, url = '') => {
   return Object.keys(mapping).find(key => ~mapping[key].indexOf(ext)) || 'default';
 };
 
+Helpers.formatBody = (rawBody) => {
+  var body;
+  if (typeof rawBody === 'string') {
+    try {
+      body = JSON.parse(rawBody);
+    } catch (err) {
+      // ignore
+    }
+  }
+  return body ? JSON.stringify(body, null, 2) : rawBody;
+};
+
+Helpers.generageCurl = (req) => {
+  let cmd = `curl -X '${req.method}' '${req.rawUrl}'`;
+  
+  // headers
+  Object.keys(req.reqHeaders || {}).forEach(key => {
+    cmd += ` -H '${`${key}: ${req.reqHeaders[key]}`}'`;
+  });
+
+  // body
+  let body = req.body;
+  if (body) {
+    if (typeof body !== 'string') {
+      body = JSON.stringify(body);
+    }
+    cmd += ` --data '${body}'`;
+  }
+  cmd += ' --compressed';
+
+  return cmd;
+};
+
 export default Helpers;

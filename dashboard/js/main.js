@@ -10,6 +10,8 @@
     const $req = $('.detail .req').empty();
     const $res = $('.detail .res').empty();
 
+    $('.open-in-new-tab').prop('href', `./dashboard/requests/${req.id}`);
+
     // append General
     const $general = $('<dl>').addClass('part general');
     $general.append($('<dt>').text('General'));
@@ -73,7 +75,7 @@
             const pair = item.split('=');
             const $row = $('<tr>');
             $row.append($('<td>').text(pair[0]));
-            $row.append($('<td>').text(pair[1]));
+            $row.append($('<td>').text(decodeURIComponent(pair[1])));
             $tbody.append($row);
           });
 
@@ -98,7 +100,7 @@
     }
 
     // append Form body
-    if (req.reqHeaders && req.reqHeaders['Content-Type'] === 'application/x-www-form-urlencoded') {
+    if (req.body && req.reqHeaders && req.reqHeaders['Content-Type'] === 'application/x-www-form-urlencoded') {
       const $form = $('<dl>').addClass('part form');
       $form.append($('<dt>').text(`Form`));
 
@@ -179,26 +181,36 @@
   }
 
   function copyAsCurlHandler({ data: req }) {
-    let cmd = `curl -X '${req.method}' '${req.rawUrl}'`;
+    let cmd = req.curlCmd;
+    if (!cmd) {
+      cmd = `curl -X '${req.method}' '${req.rawUrl}'`;
 
-    // headers
-    Object.keys(req.reqHeaders || {}).forEach(key => {
-      cmd += ` -H '${`${key}: ${req.reqHeaders[key]}`}'`;
-    });
-
-    // body
-    let body = req.body;
-    if (body) {
-      if (typeof body !== 'string') {
-        body = JSON.stringify(body);
+      // headers
+      Object.keys(req.reqHeaders || {}).forEach(key => {
+        cmd += ` -H '${`${key}: ${req.reqHeaders[key]}`}'`;
+      });
+  
+      // body
+      let body = req.body;
+      if (body) {
+        if (typeof body !== 'string') {
+          body = JSON.stringify(body);
+        }
+        cmd += ` --data '${body}'`;
       }
-      cmd += ` --data '${body}'`;
+      cmd += ' --compressed';
     }
-    cmd += ' --compressed';
     copyToClipboard(cmd);
 
     $(this).children('span.toast').removeClass('hide');
   }
+
+  $('.copyAsCurl').on('click', function(e) {
+    e.data = {
+      curlCmd: $(this).data('curlCmd')
+    };
+    copyAsCurlHandler.call(this, e);
+  });
 
   $('.requests td.req-url').on('click', function (e) {
     e.preventDefault();

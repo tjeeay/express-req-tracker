@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="../../vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../css/style.css" rel="stylesheet">
+  <title>Request Tracker</title>
+</head>
+
+<body>
+  <div class="detail-root">
+    <div class="detail-panel">
+      <nav class="tab-bar">
+        <ul class="tabs">
+          <li class="active" data-type="req">Request</li>
+          <li data-type="res">Response</li>
+        </ul>
+      </nav>
+      <div class="detail">
+        <div class="tab-content both">
+          <dl class="part general">
+            <dt>General</dt>
+            <dd>
+              <strong>Request Url:</strong>
+              <span><%=request.rawUrl %></span>
+            </dd>
+            <dd>
+              <strong>HTTP Version:</strong>
+              <span><%=`${request.protocol.toUpperCase()}/v${request.httpVersion}` %></span>
+            </dd>
+            <dd>
+              <strong>Request Method:</strong>
+              <span><%=request.method %></span>
+            </dd>
+            <dd>
+              <strong>Status Code:</strong>
+              <span>
+                <em class="statusPoint status_<%=`${('' + request.statusCode)[0]}xx` %>"></em>
+                <%=`${request.statusCode} ${request.statusMessage}` %>
+              </span>
+            </dd>
+            <dd>
+              <strong>Remote Address:</strong>
+              <span><%=request.serverIP %></span>
+            </dd>
+            <dd>
+              <strong>Process Id:</strong>
+              <span><%=request.pid %></span>
+            </dd>
+            <a class="copyAsCurl" data-curl-cmd="<%=Helpers.generageCurl(request) %>">
+              copy as cURL
+              <span class="toast glyphicon glyphicon-ok hide"></span>
+            </a>
+          </dl>
+        </div>
+        <div class="tab-content req">
+          <% if (request.reqHeaders) { %>
+            <dl class="part headers">
+              <dt>Request Headers</dt>
+              <% Object.keys(request.reqHeaders).forEach((key) => { %>
+                <dd>
+                  <strong><%=key %>:</strong>
+                  <span><%=request.reqHeaders[key] %></span>
+                </dd>
+              <% }) %>
+            </dl>
+
+            <% if (request.reqHeaders.Cookie) { %>
+              <dl class="part cookies">
+                <dt>Cookies</dt>
+                <% var cookies = (request.reqHeaders.Cookie || '').split('; '); %>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% cookies.forEach((item) => { %>
+                      <% var pair = item.split('='); %>
+                      <tr>
+                        <td><%=pair[0] %></td>
+                        <td><%=decodeURIComponent(pair[1]) %></td>
+                      </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </dl>
+              <% } %>
+          <% } %>
+
+          <% if (request.query && Object.keys(request.query).length) { %>
+            <dl class="part query">
+              <dt>Query</dt>
+              <% Object.keys(request.query).forEach((key) => { %>
+                <dd>
+                  <strong><%=key %>:</strong>
+                  <span><%=request.query[key] %></span>
+                </dd>
+              <% }) %>
+            </dl>
+          <% } %>
+
+          <% if (request.body && request.reqHeaders && request.reqHeaders['Content-Type'] === 'application/x-www-form-urlencoded') { %>
+            <dl class="part form">
+              <dt>Form</dt>
+              <% var arr = request.body.split('&'); %>
+              <% arr.forEach((item) => { %>
+                <dd>
+                  <% var pair = item.split('='); %>
+                  <strong><%=pair[0] %>:</strong>
+                  <span><%=decodeURIComponent(pair[1]) || ' ' %></span>
+                </dd>
+              <% }) %>
+            </dl>
+          <% } %>
+
+          <% if (request.body) { %>
+            <dl class="part body">
+              <dt>Request Body</dt>
+              <dd>
+                <strong></strong>
+                <span>
+                  <pre><%=Helpers.formatBody(request.body) %></pre>
+                </span>
+              </dd>
+          </dl>
+          <% } %>
+        </div>
+        <div class="tab-content res hide">
+          <% if (request.resHeaders) { %>
+            <dl class="part headers">
+              <dt>Response Headers</dt>
+              <% Object.keys(request.resHeaders).forEach((key) => { %>
+                <dd>
+                  <strong><%=key %>:</strong>
+                  <span><%=request.resHeaders[key] %></span>
+                </dd>
+              <% }) %>
+            </dl>
+          <% } %>
+
+          <% if (request.resBody) { %>
+            <dl class="part body">
+              <dt>Response Body</dt>
+              <dd>
+                <strong></strong>
+                <span>  
+                  <pre><%=Helpers.formatBody(request.resBody) %></pre>
+                </span>
+              </dd>
+            </dl>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../vendors/jquery/jquery.min.js"></script>
+  <script src="../../vendors/bootstrap/js/bootstrap.min.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+
+</html>

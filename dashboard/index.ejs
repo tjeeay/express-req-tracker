@@ -45,21 +45,21 @@
             <li>
               <dl>
                 <dd>Average duration</dd>
-                <% var average = Number(Number(performance.average).toFixed(2)); %>
+                <% var average = Number(Number(performance.average || '0').toFixed(2)); %>
                 <dt class="status_3xx" title="<%=average %> ms"><%=average %><em>ms</em></dt>
               </dl>
             </li>
             <li>
               <dl>
                 <dd>Fastest</dd>
-                <% var fastest = Number(Number(performance.fastest).toFixed(2)); %>
+                <% var fastest = Number(Number(performance.fastest || '0').toFixed(2)); %>
                 <dt class="status_2xx" title="<%=fastest %> ms"><%=fastest %><em>ms</em></dt>
               </dl>
             </li>
             <li>
               <dl>
                 <dd>Lowest</dd>
-                <% var lowest = Number(Number(performance.lowest).toFixed(2)); %>
+                <% var lowest = Number(Number(performance.lowest || '0').toFixed(2)); %>
                 <dt class="status_4xx" title="<%=lowest %> ms"><%=lowest %><em>ms</em></dt>
               </dl>
             </li>
@@ -74,7 +74,7 @@
             <div class="form-group col-lg-2">
               <label for="url">Status Code</label>
               <select class="form-control" name="statusCode">
-                <% ['All', '1xx', '2xx', '3xx', '4xx', '5xx'].forEach(function (v) { %>
+                <% ['ALL', '1xx', '2xx', '3xx', '4xx', '5xx'].forEach(function (v) { %>
                   <% if (params.statusCode === v) { %>
                     <option value="<%=v %>" selected="selected"</option><%=v %></option>
                   <% } else { %>
@@ -86,6 +86,18 @@
             <div class="form-group col-lg-2">
               <label for="ip">IP Address</label>
               <input type="text" class="form-control" name="ip" placeholder="IP Address" value="<%=params.ip %>">
+            </div>
+            <div class="form-group col-lg-2">
+              <label for="url">Method</label>
+              <select class="form-control" name="method">
+                <% ['ALL', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'].forEach(function (v) { %>
+                  <% if (params.method === v) { %>
+                    <option value="<%=v %>" selected="selected"</option><%=v %></option>
+                  <% } else { %>
+                    <option value="<%=v %>"><%=v %></option>
+                  <% } %>
+                <% }) %>
+              </select>
             </div>
             <div class="form-group col-lg-3">
               <label for="url">Request Url</label>
@@ -154,6 +166,7 @@
 
       <div class="detail-panel">
         <nav class="tab-bar">
+          <a class="open-in-new-tab" target="_blank">Open in new tab</a>
           <button class="close">
             <span>×</span>
           </button>

@@ -226,10 +226,16 @@ a.copyAsCurl span.toast {
   height: auto;
   overflow: hidden;
   background: #fff;
-  box-shadow: 5px 0 20px #000;
+  box-shadow: 5px 0 20px rgba(0, 0, 0, .3), -5px 0 20px rgba(0, 0, 0, .3);
   margin-right: -640px;
   /* property name | duration | timing function | delay */
   transition: margin-right 0.5s ease-in-out;
+}
+
+.detail-root .detail-panel {
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .detail-panel.in {
@@ -244,12 +250,19 @@ a.copyAsCurl span.toast {
   padding-top: 8px;
   border-bottom: 1px solid #ccc;
 }
+.tab-bar a.open-in-new-tab,
 .tab-bar button.close {
   cursor: pointer;
   text-decoration: none;
   position: absolute;
   height: 16px;
   top: 12px;
+}
+.tab-bar a.open-in-new-tab {
+  right: 36px;
+  padding-top: 2px;
+}
+.tab-bar button.close {
   right: 0;
 }
 .tab-bar button.close:hover {

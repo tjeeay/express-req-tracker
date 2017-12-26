@@ -20,11 +20,14 @@ function searchRequests(req, res) {
       };
     }
   }
-  if (params.url) {
-    query.url = RegExp(params.url, 'i');
-  }
   if (params.ip) {
     query.ip = params.ip;
+  }
+  if (params.method && params.method != 'ALL') {
+    query.method = params.method;
+  }
+  if (params.url) {
+    query.url = RegExp(params.url, 'i');
   }
   
   const counterPipe = [{
@@ -79,6 +82,14 @@ function searchRequests(req, res) {
     }, res.renderCatcher('index'));
 }
 
+function detail(req, res) {
+  Request.findOne({ _id: req.params.id })
+    .then(request => {
+      res.render('detail', { request });
+    }, res.renderCatcher('detail'));
+}
+
 dashboardCtrl.get('/', searchRequests);
+dashboardCtrl.get('/requests/:id', detail);
 
 export default dashboardCtrl;
