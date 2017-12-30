@@ -79,7 +79,7 @@ function searchRequests(req, res) {
       performance,
       params
     });
-    }, res.renderCatcher('index'));
+  }, res.renderCatcher('index'));
 }
 
 function detail(req, res) {

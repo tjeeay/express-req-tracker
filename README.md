@@ -1,6 +1,16 @@
 # express-req-tracker
 
-![](https://travis-ci.org/tjeeay/express-req-tracker.svg?branch=master)
+[![Travis-CI][travis-badge]][travis-url]
+[![NPM downloads][download-badge]][package-url]
+
+[![NPM package-info][package-info-badge]][package-url]
+
+[travis-url]: https://travis-ci.org/tjeeay/express-req-tracker
+[travis-badge]: https://travis-ci.org/tjeeay/express-req-tracker.svg?branch=master
+
+[package-url]: https://npmjs.org/package/express-req-tracker
+[download-badge]: https://img.shields.io/npm/dm/kdniaosdk.svg?style=flat
+[package-info-badge]: https://nodei.co/npm/express-req-tracker.png?compact=true
 
 A Express middleware for tracking request and responses.
 
@@ -12,30 +22,20 @@ yarn add express-req-tracker
 npm install -S express-req-tracker
 ```
 
-## Run Example
-
-```bash
-# compile
-npm run compile
-
-# run
-npm run start
-```
-
 ## Usage
 
 ```js
 import express from 'express';
-import reqTracker from '../src';
+import reqTracker from 'express-req-tracker';
 
 const app = express();
 
 // use req-tracker
 app.use(reqTracker({
   app: 'my-project',
-  mongodb: 'mongodb://path of your database server',
+  mongodb: 'mongodb://localhost/req-tracker-sample',
   options: {
-    immediate: false
+    immediate: true
   }
 }));
 
@@ -49,9 +49,19 @@ app.listen(PORT, () => {
 });
 ```
 
-## Dashboard
+## Run Example
 
-You also can open the dashboard: [http://{your server host}/req-tracker/dashboard](http://localhost:7001/req-tracker/dashboard) to view the request logs.
+>`Notice`: before run example, please ensure you have installed and running MongoDB.
+
+```bash
+# first: run unit test to produce request logs
+npm run test
+
+# second: run sample
+npm run start
+```
+
+after running example, then you can open the dashboard [http://localhost:7001/req-tracker/dashboard](http://localhost:7001/req-tracker/dashboard) to view the request logs.
 
 ![](./dashboard/img/snapshot.png)
 

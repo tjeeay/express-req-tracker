@@ -1,3 +1,7 @@
+body {
+  overflow: hidden;
+}
+
 .hide {
   display: hidden;
 }
@@ -322,7 +326,7 @@ a.copyAsCurl span.toast {
   display: block;
   overflow: hidden;
   text-indent: 0;
-  padding-left: 7.5px;
+  padding: 0 7.5px;
   word-break: break-all;
 }
 .detail .part table tr td {
