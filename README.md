@@ -9,7 +9,7 @@
 [travis-badge]: https://travis-ci.org/tjeeay/express-req-tracker.svg?branch=master
 
 [package-url]: https://npmjs.org/package/express-req-tracker
-[download-badge]: https://img.shields.io/npm/dm/kdniaosdk.svg?style=flat
+[download-badge]: https://img.shields.io/npm/dm/express-req-tracker.svg?style=flat
 [package-info-badge]: https://nodei.co/npm/express-req-tracker.png?compact=true
 
 A Express middleware for tracking request and responses.
